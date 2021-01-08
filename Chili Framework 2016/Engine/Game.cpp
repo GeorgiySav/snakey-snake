@@ -142,8 +142,25 @@ void Game::Ate()
 	//compares the fruits and head's coords, and if they are equal, the tail grows, and the fruit is given a new random position
 	if (headx == fruitx && heady == fruity)
 	{
-		fruitx = 30 + (14 * (rand() % 54 + 1)) - 14;
-		fruity = 30 + (14 * (rand() % 54 + 1)) - 14;
+		bool can = false;
+		do
+		{
+			//finds random coords
+			fruitx = 30 + (14 * (rand() % 54 + 1)) - 14;
+			fruity = 30 + (14 * (rand() % 54 + 1)) - 14;
+
+			//checks if the snake is in that position
+			for (int i = 0; i < nTail; i++)
+			{
+				//if it isn't, then it can print, otherwise, it will generates new coord
+				if (fruitx != TailX[i] && fruity != TailY[i])
+				{
+					can = true;
+				}
+			}
+
+		} while (can == false);
+		
 
 		nTail++;
 	}
@@ -189,7 +206,14 @@ void Game::DrawBox(int x, int y, int r, int g, int b)
 	{
 		for (int j = y - 7; j < y + 7; j++)
 		{
-			gfx.PutPixel(i, j, r, g, b);
+			if (i == x - 7 || i == x + 7 || j == y - 7 || j == y + 7)
+			{
+				gfx.PutPixel(i, j, 0, 0, 0);
+			}
+			else
+			{
+				gfx.PutPixel(i, j, r, g, b);
+			}
 		}
 	}
 }
